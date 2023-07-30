@@ -6,7 +6,18 @@ Scene::Scene(unsigned int width, unsigned int height)
 {
 	// create the rubiks cube and respective components
 	Entity* entity = CreateEntity("Rubiks Cube");
-	entity->AddComponent(new RendererComponent(entity));
+	entity->AddComponent(new RendererComponent(entity, glm::vec3(0.1f, 0.9f, 0.1f)));
+	entity->GetTransform()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+
+	Entity* entity1 = CreateEntity("Rubiks Cube 1");
+	entity1->AddComponent(new RendererComponent(entity1, glm::vec3(0.85f, 0.4f, 0.01f)));
+	entity1->GetTransform()->SetPosition(glm::vec3(1.0f, 1.0f, 1.0f));
+	entity1->GetTransform()->SetRotation(glm::vec3(45.0f, 45.0f, 45.0f));
+
+	Entity* entity2 = CreateEntity("Rubiks Cube 2");
+	entity2->AddComponent(new RendererComponent(entity2, glm::vec3(0.85f, 0.85f, 0.08f)));
+	entity2->GetTransform()->SetPosition(glm::vec3(-2.0f, 1.0f, 0.0f));
+	entity2->GetTransform()->SetRotation(glm::vec3(45.0f, 45.0f, 45.0f));
 }
 
 Scene::~Scene()

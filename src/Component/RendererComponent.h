@@ -17,7 +17,7 @@ struct Vertex
 class RendererComponent : public Component, public IRenderer
 {
 public:
-	RendererComponent(Entity* entity);
+	RendererComponent(Entity* entity, glm::vec3 color);
 
 	void Update() {}
 
@@ -29,5 +29,6 @@ private:
 	Texture* m_Texture;
 	std::vector<Vertex> m_Vertices;
 	GLuint m_VAO, m_VBO;
+	glm::vec3 m_color;
 };
 

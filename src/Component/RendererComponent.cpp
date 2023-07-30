@@ -3,7 +3,8 @@
 #include "../Camera.h"
 #include "../Scene.h"
 
-RendererComponent::RendererComponent(Entity* entity) : Component(entity)
+RendererComponent::RendererComponent(Entity* entity, glm::vec3 color) 
+    : Component(entity), m_color(color)
 {
     m_Shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
     m_Shader->Bind();
@@ -55,7 +56,7 @@ void RendererComponent::Render()
     for (GLuint i = 0; i < 6; i++)
     {
         // Calculate the model matrix for each object and pass it to shader before drawing
-        m_Shader->SetUniform3f("faceColor", glm::vec3(0.05f, 0.25f, 0.7f));
+        m_Shader->SetUniform3f("faceColor", m_color);
         GLCall(glDrawArrays(GL_TRIANGLES, i * 6, 6));
     }
 
