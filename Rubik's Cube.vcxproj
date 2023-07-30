@@ -145,10 +145,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="src\RubiksCube.cpp" />
+    <ClCompile Include="src\Component\RendererComponent.cpp" />
+    <ClCompile Include="src\Component\Component.cpp" />
+    <ClCompile Include="src\Entity\Entity.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\RubiksCube\Face.cpp" />
+    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\RubiksCube\RubiksCube.cpp" />
     <ClCompile Include="src\opengl\Mesh.cpp" />
-    <ClCompile Include="src\Cubelet.cpp" />
+    <ClCompile Include="src\RubiksCube\Cubelet.cpp" />
     <ClCompile Include="src\opengl\openglHelper.cpp" />
     <ClCompile Include="src\opengl\Shader.cpp" />
     <ClCompile Include="src\Camera.cpp" />
@@ -161,10 +167,17 @@
     <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="src\RubiksCube.h" />
+    <ClInclude Include="src\Component\RendererComponent.h" />
+    <ClInclude Include="src\Component\Component.h" />
+    <ClInclude Include="src\Entity\Entity.h" />
+    <ClInclude Include="src\opengl\IRenderer.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\RubiksCube\Face.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\RubiksCube\RubiksCube.h" />
     <ClInclude Include="src\opengl\Mesh.h" />
-    <ClInclude Include="src\Cubelet.h" />
+    <ClInclude Include="src\RubiksCube\Cubelet.h" />
     <ClInclude Include="src\opengl\openglHelper.h" />
     <ClInclude Include="src\opengl\Shader.h" />
     <ClInclude Include="src\Camera.h" />

@@ -8,16 +8,15 @@
 
 #include "glm\glm.hpp"
 
-#include "RubiksCube.h"
+#include "Scene.h"
+#include "Camera.h"
+#include "opengl\openglHelper.h"
 
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 const unsigned int FPS = 60;
 const unsigned int FRAME_DELAY = 1000 / FPS;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
-
-Camera camera(glm::vec3(0.0f, 0.0f, 6.0f), WIDTH, HEIGHT);
-
 
 int main(int argc, char* argv[])
 {
@@ -28,7 +27,7 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-	SDL_Window* window = SDL_CreateWindow("Rubik's Cube", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
+	SDL_Window* window = SDL_CreateWindow("Rubik's Cube", WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 
 	// Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -57,7 +56,7 @@ int main(int argc, char* argv[])
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-	RubiksCube cube(3, &camera);
+	std::unique_ptr<Scene> scene = std::make_unique<Scene>(WIDTH, HEIGHT);
 
 	bool running = true;
 
@@ -73,14 +72,14 @@ int main(int argc, char* argv[])
 		if (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT) running = false;
-			cube.Input(e);
+			//cube.Input(e);
 		}
 
 		// Update
-		cube.Update();
+		scene->Update();
 
 		// Render
-		cube.Render();
+		scene->Render();
 
 		SDL_GL_SwapWindow(window);
 

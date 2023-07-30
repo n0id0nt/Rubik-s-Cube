@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "../Component/RendererComponent.h"
 
 void Mesh::setCubeData(std::vector<Vertex>& vertices)
 {
@@ -48,6 +49,6 @@ void Mesh::setCubeData(std::vector<Vertex>& vertices)
         {{-0.5f,  0.5f, -0.5f},    {0.0f, 1.0f}} 
     };
 
-        vertices.clear();
-        vertices = _vertices;
+    vertices.clear();
+    vertices = _vertices;
 }
