@@ -2,13 +2,20 @@
 #include "../Entity/Entity.h"
 #include "RendererComponent.h"
 
-CubieComponent::CubieComponent(Entity* entity, ComponentRubiksCubeAdaptor* cubeComponent)
-	: Component(entity), m_sides(), m_RubiksCubeComponent(cubeComponent)
+CubieComponent::CubieComponent(Entity* entity, ComponentRubiksCubeAdaptor* cubeComponent, std::vector<Side> sides)
+	: Component(entity), m_sides(sides), m_RubiksCubeComponent(cubeComponent)
 {
-	entity->AddComponent(new RendererComponent(entity, glm::vec3(0.1f, 0.9f, 0.1f)));
+	m_renderComponent = new RendererComponent(entity);
+	entity->AddComponent(m_renderComponent);
 }
 
-void CubieComponent::AddSide(Side side)
+void CubieComponent::UpdateColors()
 {
-	m_sides.push_back(side);
+	auto sides =  m_RubiksCubeComponent->GetColors(m_sides);
+	RendererComponent::ColorScheme colorScheme;
+	for (int i = 0; i < sides.size(); i++)
+	{
+		colorScheme[i] = ComponentRubiksCubeAdaptor::ConvertSideToColor(sides[i]);
+	}
+	m_renderComponent->SetColorSceme(colorScheme);
 }

@@ -3,34 +3,16 @@
 #include "../Camera.h"
 #include "../Scene.h"
 
-RendererComponent::RendererComponent(Entity* entity, glm::vec3 color) 
-    : Component(entity), m_color(color)
+RendererComponent::RendererComponent(Entity* entity) 
+    : Component(entity), m_colorScheme{ black, black, black, black, black, black }//{ blue, green, orange, red, yellow, white }
 {
-    m_Shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
-    m_Shader->Bind();
-    m_Texture = new Texture("res/images/CubeFace.png");
+    initOpenGL();
+}
 
-    Mesh::setCubeData(m_Vertices);
-
-    // init the VAO and VBO
-    GLCall(glGenVertexArrays(1, &m_VAO));
-    GLCall(glBindVertexArray(m_VAO));
-
-    GLCall(glGenBuffers(1, &m_VBO));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW));
-
-    // Position attribute
-    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0));
-    GLCall(glEnableVertexAttribArray(0));
-
-    // TexCoord attribute
-    GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, Vertex::texCoord))));
-    GLCall(glEnableVertexAttribArray(1));
-
-    GLCall(glBindVertexArray(0)); // Unbind VAO
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); // Unbind VBO
-
+RendererComponent::RendererComponent(Entity* entity, ColorScheme colorSceme)
+    : Component(entity), m_colorScheme(colorSceme)
+{
+    initOpenGL();
 }
 
 void RendererComponent::Render()
@@ -56,9 +38,42 @@ void RendererComponent::Render()
     for (GLuint i = 0; i < 6; i++)
     {
         // Calculate the model matrix for each object and pass it to shader before drawing
-        m_Shader->SetUniform3f("faceColor", m_color);
+        m_Shader->SetUniform3f("faceColor", m_colorScheme[i]);
         GLCall(glDrawArrays(GL_TRIANGLES, i * 6, 6));
     }
 
     GLCall(glBindVertexArray(0));
+}
+
+void RendererComponent::SetColorSceme(ColorScheme colorScheme)
+{
+    m_colorScheme = colorScheme;
+}
+
+void RendererComponent::initOpenGL()
+{
+    m_Shader = new Shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+    m_Shader->Bind();
+    m_Texture = new Texture("res/images/CubeFace.png");
+
+    Mesh::setCubeData(m_Vertices);
+
+    // init the VAO and VBO
+    GLCall(glGenVertexArrays(1, &m_VAO));
+    GLCall(glBindVertexArray(m_VAO));
+
+    GLCall(glGenBuffers(1, &m_VBO));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW));
+
+    // Position attribute
+    GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0));
+    GLCall(glEnableVertexAttribArray(0));
+
+    // TexCoord attribute
+    GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, Vertex::texCoord))));
+    GLCall(glEnableVertexAttribArray(1));
+
+    GLCall(glBindVertexArray(0)); // Unbind VAO
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); // Unbind VBO
 }

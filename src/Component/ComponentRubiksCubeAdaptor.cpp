@@ -5,6 +5,7 @@
 #include "RendererComponent.h"
 #include "../Input.h"
 #include <iostream>
+#include <array>
 
 ComponentRubiksCubeAdaptor::ComponentRubiksCubeAdaptor(Entity* entity)
 	: Component(entity), m_rubiksCube(), m_isAnimating(false), m_cubies()
@@ -20,18 +21,17 @@ ComponentRubiksCubeAdaptor::ComponentRubiksCubeAdaptor(Entity* entity)
 			}
 		}
 	}
-
-	entity->AddComponent(new RendererComponent(entity, glm::vec3(0.1f, 0.9f, 0.1f)));
 }
 	
 
 void ComponentRubiksCubeAdaptor::Update()
 {
+	const float rotationSpeed = 3.0f;
 	// rotate
 	glm::vec2 dir = Input::GetArrowDir();
 	
 	glm::vec3 rotation = GetEntity()->GetTransform()->GetRotation();
-	GetEntity()->GetTransform()->SetRotation(glm::vec3(rotation.x + dir.y, rotation.y + dir.x, rotation.z));
+	GetEntity()->GetTransform()->SetRotation(glm::vec3(rotation.x + dir.y * rotationSpeed, rotation.y - dir.x * rotationSpeed, rotation.z));
 
 	// get the move and set the piece
 	if (false)
@@ -43,41 +43,92 @@ void ComponentRubiksCubeAdaptor::Update()
 void ComponentRubiksCubeAdaptor::CreateCubie(int x, int y, int z)
 {
 	// check whether center, edge, or corner
-	bool onXBoundry = x == 0 || x == CUBE_LAYERS - 1;
-	bool onYBoundry = y == 0 || y == CUBE_LAYERS - 1;
-	bool onZBoundry = z == 0 || z == CUBE_LAYERS - 1;
+	std::vector<Side> sides;
+
+	if (x == 0)
+	{
+		sides.push_back(Left);
+	}
+	else if (x == CUBE_LAYERS - 1)
+	{
+		sides.push_back(Right);
+	}
+
+	if (y == 0)
+	{
+		sides.push_back(Up);
+	}
+	else if (y == CUBE_LAYERS - 1)
+	{
+		sides.push_back(Down);
+	}
+
+	if (z == 0)
+	{
+		sides.push_back(Front);
+	}
+	else if (z == CUBE_LAYERS - 1)
+	{
+		sides.push_back(Back);
+	}
 
 	// ignore when core
-	if (!(onXBoundry || onYBoundry || onZBoundry))
+	if (sides.size() == 0)
 		return;
 
 	CubieComponent* cubie;
 	Entity* entity;
-	// is corner
-	if (onXBoundry && onYBoundry && onZBoundry)
-	{
-		entity = GetEntity()->GetScene()->CreateEntity("Corner");
-		cubie = new CubieComponent(entity, this);
-		entity->AddComponent(cubie);
-	}
-	// is edge
-	else if ((onXBoundry && onYBoundry) || (onXBoundry && onZBoundry) || (onYBoundry && onZBoundry))
-	{
-		entity = GetEntity()->GetScene()->CreateEntity("Edge");
-		cubie = new CubieComponent(entity, this);
-		entity->AddComponent(cubie);
-	}
-	// is Center
-	else
-	{
-		entity = GetEntity()->GetScene()->CreateEntity("Center");
-		cubie = new CubieComponent(entity, this);
-		entity->AddComponent(cubie);
-	}
+	entity = GetEntity()->GetScene()->CreateEntity("Cubie");
+	cubie = new CubieComponent(entity, this, sides);
+	entity->AddComponent(cubie);
 
-	float offset = CUBE_LAYERS / 2.0f;
+	float offset = CUBE_LAYERS / 2.0f - 0.5f;
 	entity->GetTransform()->SetPosition(glm::vec3(x - offset, y - offset, z - offset));
 	entity->GetTransform()->SetParent(GetEntity()->GetTransform());
 
+	cubie->UpdateColors();
+
 	m_cubies.push_back(cubie);
+}
+
+std::array<Side, CUBE_SIDES> ComponentRubiksCubeAdaptor::GetColors(std::vector<Side> sides)
+{
+	int sidesCount = sides.size();
+	switch (sidesCount)
+	{
+	case 1:
+		RubiksCube::Center center;
+		std::copy(sides.begin(), sides.begin() + sidesCount, center.begin());
+		return m_rubiksCube.GetColors(center);
+	case 2:
+		RubiksCube::Edge edge;
+		std::copy(sides.begin(), sides.begin() + sidesCount, edge.begin());
+		return m_rubiksCube.GetColors(edge);
+	case 3:
+		RubiksCube::Corner corner;
+		std::copy(sides.begin(), sides.begin() + sidesCount, corner.begin());
+		return m_rubiksCube.GetColors(corner);
+	}
+
+	return std::array<Side, CUBE_SIDES>();
+}
+
+glm::vec3 ComponentRubiksCubeAdaptor::ConvertSideToColor(Side side)
+{
+	switch (side)
+	{
+	case Up:
+		return white;
+	case Down:
+		return yellow;
+	case Left:
+		return orange;
+	case Right:
+		return red;
+	case Front:
+		return green;
+	case Back:
+		return blue;
+	}
+	return black;
 }
