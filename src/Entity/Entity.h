@@ -15,13 +15,22 @@ public:
 
 	void Update();
 
-	Transform* GetTransform() const { return m_transform.get(); }
-	Scene* GetScene() const { return m_scene; }
-
 	void SetName(std::string name);
 	std::string GetName() const;
 
 	void AddComponent(Component* component);
+
+private:
+	std::string m_name;
+
+	std::vector<std::unique_ptr<Component>> m_components;
+
+	std::unique_ptr<Transform> m_transform;
+	Scene* m_scene;
+
+public:
+	Transform* GetTransform() const { return m_transform.get(); }
+	Scene* GetScene() const { return m_scene; }
 
 	template <class T>
 	T* GetComponent() const 
@@ -46,13 +55,5 @@ public:
 		return false;
 	}
 	 
-private:
-
-	std::string m_name;
-
-	std::vector<std::unique_ptr<Component>> m_components;
-
-	std::unique_ptr<Transform> m_transform;
-	Scene* m_scene;
 };
 

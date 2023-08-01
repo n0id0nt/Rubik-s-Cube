@@ -2,7 +2,7 @@
 #include "../Scene.h"
 
 Entity::Entity(Scene* scene, std::string name) 
-	: m_scene(scene), m_name(name), m_components(std::vector<std::unique_ptr<Component>>()), m_transform(std::make_unique<Transform>())
+	: m_scene(scene), m_name(name), m_components(), m_transform(std::make_unique<Transform>())
 {
 
 }

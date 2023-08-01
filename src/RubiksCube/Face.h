@@ -2,24 +2,24 @@
 
 #include <array>
 
-enum Color;
+enum Side;
 enum MoveDir;
 
 class Face
 {
 public:
-	Face(Color color);
+	Face(Side side);
 
 	bool IsSolved();
 
-	std::array<Color, 3> GetRow();
-	std::array<Color, 3> SetRow();
+	std::array<Side, 3> GetRow();
+	std::array<Side, 3> SetRow();
 
 	void Rotate(MoveDir direction);
 
 private:
-	std::array<Color, 4> m_corners;
-	std::array<Color, 4> m_edges;
-	Color m_center;
+	std::array<Side, 4> m_corners;
+	std::array<Side, 4> m_edges;
+	Side m_side;
 };
 

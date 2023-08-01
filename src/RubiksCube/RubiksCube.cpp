@@ -1,7 +1,7 @@
 #include "RubiksCube.h"
 
 RubiksCube::RubiksCube() 
-	: m_up(White), m_down(Yellow), m_left(Orange), m_right(Red), m_back(Blue), m_front(Green)
+	: m_up(Up), m_down(Down), m_left(Left), m_right(Right), m_back(Back), m_front(Front)
 {
 	
 }

@@ -1,6 +1,7 @@
 #include "Face.h"
 
-Face::Face(Color color)
+Face::Face(Side side)
+	: m_side(side)
 {
 }
 
@@ -9,14 +10,14 @@ bool Face::IsSolved()
 	return false;
 }
 
-std::array<Color, 3> Face::GetRow()
+std::array<Side, 3> Face::GetRow()
 {
-	return std::array<Color, 3>();
+	return std::array<Side, 3>();
 }
 
-std::array<Color, 3> Face::SetRow()
+std::array<Side, 3> Face::SetRow()
 {
-	return std::array<Color, 3>();
+	return std::array<Side, 3>();
 }
 
 void Face::Rotate(MoveDir direction)

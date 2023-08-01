@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "opengl\openglHelper.h"
+#include "Input.h"
 
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -44,8 +45,6 @@ int main(int argc, char* argv[])
 	// Define the viewport dimensions
 	glViewport(0, 0, WIDTH, HEIGHT);
 
-    SDL_Event e;
-
 	Uint32 frameStart;
 	unsigned int frameTime;
 
@@ -69,11 +68,12 @@ int main(int argc, char* argv[])
 		GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		if (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT) running = false;
-			//cube.Input(e);
-		}
+		// input
+		Input::Update();
+
+		// quit
+		if (Input::Quit())
+			running = false;
 
 		// Update
 		scene->Update();
