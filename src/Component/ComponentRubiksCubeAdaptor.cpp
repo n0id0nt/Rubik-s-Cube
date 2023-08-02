@@ -56,20 +56,20 @@ void ComponentRubiksCubeAdaptor::CreateCubie(int x, int y, int z)
 
 	if (y == 0)
 	{
-		sides.push_back(Up);
+		sides.push_back(Down);
 	}
 	else if (y == CUBE_LAYERS - 1)
 	{
-		sides.push_back(Down);
+		sides.push_back(Up);
 	}
 
 	if (z == 0)
 	{
-		sides.push_back(Front);
+		sides.push_back(Back);
 	}
 	else if (z == CUBE_LAYERS - 1)
 	{
-		sides.push_back(Back);
+		sides.push_back(Front);
 	}
 
 	// ignore when core
