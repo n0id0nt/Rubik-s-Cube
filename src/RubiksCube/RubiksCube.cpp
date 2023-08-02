@@ -14,6 +14,16 @@ RubiksCube::RubiksCube()
 
 void RubiksCube::Move(Side face, MoveDir moveDir)
 {
+	m_faces[face].Rotate(moveDir);
+
+	// rotate the edges clockwise
+	auto neighbours = m_faces[face].GetNeighbours();
+	std::array<Side, NUMBER_OF_PIECES_PER_ROW> swap = m_faces[neighbours[0]].GetRow(face);
+	for (int i = 1; i < neighbours.size(); i++)
+	{
+		m_faces[neighbours[i - 1]].SetRow(m_faces[neighbours[i]].GetRow(face), face);
+	}
+	m_faces[neighbours[neighbours.size() - 1]].SetRow(swap, face);
 }
 
 bool RubiksCube::IsSolved()
@@ -41,7 +51,9 @@ std::array<Side, CUBE_SIDES> RubiksCube::GetColors(Corner sides)
 		{
 			if (i == sides[j])
 			{
-				colorScheme[i] = sides[j];
+				Side neighbour1 = j == 0 ? sides[1] : sides[0];
+				Side neighbour2 = j == 1 ? sides[2] : sides[1];
+				colorScheme[i] = m_faces[sides[j]].GetCornerSide(neighbour1, neighbour2);
 			}
 		}
 	}
@@ -58,7 +70,8 @@ std::array<Side, CUBE_SIDES> RubiksCube::GetColors(Edge sides)
 		{
 			if (i == sides[j])
 			{
-				colorScheme[i] = sides[j];
+				Side neighbour = j == 0 ? sides[1] : sides[0];
+				colorScheme[i] = m_faces[sides[j]].GetEdgeSide(neighbour);
 			}
 		}
 	}
@@ -75,7 +88,7 @@ std::array<Side, CUBE_SIDES> RubiksCube::GetColors(Center sides)
 		{
 			if (i == sides[j])
 			{
-				colorScheme[i] = sides[j];
+				colorScheme[i] = m_faces[sides[j]].GetSide();
 			}
 		}
 	}

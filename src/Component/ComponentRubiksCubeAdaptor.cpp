@@ -29,11 +29,37 @@ void ComponentRubiksCubeAdaptor::Update()
 	const float rotationSpeed = 3.0f;
 	// rotate
 	glm::vec2 dir = Input::GetArrowDir();
-	
 	glm::vec3 rotation = GetEntity()->GetTransform()->GetRotation();
 	GetEntity()->GetTransform()->SetRotation(glm::vec3(rotation.x + dir.y * rotationSpeed, rotation.y - dir.x * rotationSpeed, rotation.z));
 
-	// get the move and set the piece
+	// rotate cube sides
+	// up
+	if (Input::isKeyDown(SDL_SCANCODE_U))
+	{
+		Move(Up, Clockwise);
+	}
+	else if (Input::isKeyDown(SDL_SCANCODE_D))
+	{
+		Move(Down, Clockwise);
+	}
+	else if (Input::isKeyDown(SDL_SCANCODE_R))
+	{
+		Move(Right, Clockwise);
+	}
+	else if (Input::isKeyDown(SDL_SCANCODE_L))
+	{
+		Move(Left, Clockwise);
+	}
+	else if (Input::isKeyDown(SDL_SCANCODE_F))
+	{
+		Move(Front, Clockwise);
+	}
+	else if (Input::isKeyDown(SDL_SCANCODE_B))
+	{
+		Move(Back, Clockwise);
+	}
+
+	// animate the move
 	if (false)
 	{
 		//m_rubiksCube.Move()
@@ -131,4 +157,22 @@ glm::vec3 ComponentRubiksCubeAdaptor::ConvertSideToColor(Side side)
 		return blue;
 	}
 	return black;
+}
+
+void ComponentRubiksCubeAdaptor::Move(Side side, MoveDir dir)
+{
+	std::cout << "move" << std::endl;
+
+	// update internal model
+	m_rubiksCube.Move(side, dir);
+	// update color scheme
+	UpdateColors();
+}
+
+void ComponentRubiksCubeAdaptor::UpdateColors()
+{
+	for (auto& cubie : m_cubies)
+	{
+		cubie->UpdateColors();
+	}
 }

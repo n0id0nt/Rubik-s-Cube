@@ -20,6 +20,9 @@ public:
     static glm::vec3 ConvertSideToColor(Side);
 
 private:
+    void Move(Side side, MoveDir dir);
+    void UpdateColors();
+
     RubiksCube m_rubiksCube;
     bool m_isAnimating;
     std::vector<CubieComponent*> m_cubies;

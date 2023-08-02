@@ -70,6 +70,7 @@
   <ItemGroup>
     <None Include="res\shaders\vertex.shader" />
     <None Include="res\shaders\fragment.shader" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">
