@@ -6,7 +6,7 @@ RubiksCube::RubiksCube()
 		{Up, Face(Up, {Back, Right, Front, Left})},
 		{Down, Face(Down, {Front, Right, Back, Left})},
 		{Left, Face(Left, {Up, Front, Down, Back})},
-		{Right, Face(Right, {Up, Back, Down, Right})},
+		{Right, Face(Right, {Up, Back, Down, Front})},
 		{Front, Face(Front, {Up, Right, Down, Left})},
 		{Back, Face(Back, {Up, Left, Down, Right})},
 	};

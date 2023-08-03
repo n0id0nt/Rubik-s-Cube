@@ -4,8 +4,17 @@
 Face::Face(Side side, std::array<Side, NUMBER_OF_NEIGHBOURS> neightbours)
 	: m_side(side), m_corners(), m_edges(), m_neighbours(neightbours)
 {
-	std::fill(m_corners.begin(), m_corners.end(), m_side);
-	std::fill(m_edges.begin(), m_edges.end(), m_side);
+	std::fill(m_corners.begin(), m_corners.end(), side);
+	std::fill(m_edges.begin(), m_edges.end(), side);
+	//m_corners[0] = Up;
+	//m_corners[1] = Down;
+	//m_corners[2] = Left;
+	//m_corners[3] = Right;
+	//
+	//m_edges[0] = Up;
+	//m_edges[1] = Down;
+	//m_edges[2] = Left;
+	//m_edges[3] = Right;
 }
 
 Face::Face()
@@ -58,15 +67,20 @@ void Face::Rotate(MoveDir direction)
 
 Side Face::GetCornerSide(Side neighbour1, Side neighbour2)
 {
+	if ((m_neighbours[0] == neighbour1 && m_neighbours[m_neighbours.size() - 1] == neighbour2)
+		|| (m_neighbours[0] == neighbour2 && m_neighbours[m_neighbours.size() - 1] == neighbour1))
+	{
+		return m_corners[0];
+	}
 	for (int i = 1; i < m_neighbours.size(); i++)
 	{
 		if ((m_neighbours[i - 1] == neighbour1 && m_neighbours[i] == neighbour2)
 			|| (m_neighbours[i - 1] == neighbour2 && m_neighbours[i] == neighbour1))
 		{
-			return m_edges[i];
+			return m_corners[i];
 		}
 	}
-	return m_edges[0];
+	return Core;
 }
 
 Side Face::GetEdgeSide(Side neighbour)

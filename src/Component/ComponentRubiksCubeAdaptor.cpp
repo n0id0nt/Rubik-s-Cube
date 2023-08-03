@@ -34,27 +34,27 @@ void ComponentRubiksCubeAdaptor::Update()
 
 	// rotate cube sides
 	// up
-	if (Input::isKeyDown(SDL_SCANCODE_U))
+	if (Input::isKeyJustPressed(SDLK_u))
 	{
 		Move(Up, Clockwise);
 	}
-	else if (Input::isKeyDown(SDL_SCANCODE_D))
+	else if (Input::isKeyJustPressed(SDLK_d))
 	{
 		Move(Down, Clockwise);
 	}
-	else if (Input::isKeyDown(SDL_SCANCODE_R))
+	else if (Input::isKeyJustPressed(SDLK_r))
 	{
 		Move(Right, Clockwise);
 	}
-	else if (Input::isKeyDown(SDL_SCANCODE_L))
+	else if (Input::isKeyJustPressed(SDLK_l))
 	{
 		Move(Left, Clockwise);
 	}
-	else if (Input::isKeyDown(SDL_SCANCODE_F))
+	else if (Input::isKeyJustPressed(SDLK_f))
 	{
 		Move(Front, Clockwise);
 	}
-	else if (Input::isKeyDown(SDL_SCANCODE_B))
+	else if (Input::isKeyJustPressed(SDLK_b))
 	{
 		Move(Back, Clockwise);
 	}

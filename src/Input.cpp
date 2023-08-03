@@ -2,11 +2,18 @@
 
 std::vector<bool> Input::m_mouseButtonStates { false, false, false };
 glm::vec2 Input::m_mousePosition(0,0);
-Uint8* Input::m_keystates(0);
-bool Input::m_quit(false);
+bool Input::m_quit = false;
+std::set<SDL_Keycode> Input::m_keysDown {};
+std::set<SDL_Keycode> Input::m_keysPressed {};
+std::set<SDL_Keycode> Input::m_keysReleased {};
 
 void Input::Update()
 {
+    // reset the keys pressed and keys released arrays
+    m_keysPressed.clear();
+    m_keysReleased.clear();
+
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -24,10 +31,10 @@ void Input::Update()
             onMouseButtonUp(event);
             break;
         case SDL_KEYDOWN:
-            onKeyDown();
+            onKeyDown(event);
             break;
         case SDL_KEYUP:
-            onKeyUp();
+            onKeyUp(event);
             break;
         default:
             break;
@@ -38,8 +45,8 @@ void Input::Update()
 
 glm::vec2 Input::GetArrowDir()
 {
-    int x = isKeyDown(SDL_SCANCODE_RIGHT) - isKeyDown(SDL_SCANCODE_LEFT);
-    int y = isKeyDown(SDL_SCANCODE_UP) - isKeyDown(SDL_SCANCODE_DOWN);
+    int x = isKeyDown(SDLK_RIGHT) - isKeyDown(SDLK_LEFT);
+    int y = isKeyDown(SDLK_UP) - isKeyDown(SDLK_DOWN);
     return glm::vec2(x, y);
 }
 
@@ -48,31 +55,33 @@ glm::vec2* Input::getMousePosition()
     return &m_mousePosition;
 }
 
-bool Input::isKeyDown(SDL_Scancode key)
+bool Input::isKeyDown(SDL_Keycode key)
 {
-    if (m_keystates != 0)
-    {
-        if (m_keystates[key] == 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return false;
+    return m_keysDown.count(key);
 }
 
-void Input::onKeyDown()
+bool Input::isKeyJustPressed(SDL_Keycode key)
 {
-    m_keystates = (Uint8*)SDL_GetKeyboardState(0);
+    return m_keysPressed.count(key);
 }
 
-void Input::onKeyUp()
+bool Input::isKeyJustReleased(SDL_Keycode key)
 {
-    m_keystates = (Uint8*)SDL_GetKeyboardState(0);
+    return m_keysReleased.count(key);
+}
+
+void Input::onKeyDown(SDL_Event& event)
+{
+    SDL_Keycode key = event.key.keysym.sym;
+    m_keysDown.insert(key);
+    m_keysPressed.insert(key);
+}
+
+void Input::onKeyUp(SDL_Event& event)
+{
+    SDL_Keycode key = event.key.keysym.sym;
+    m_keysDown.erase(key);
+    m_keysReleased.insert(key);
 }
 
 bool Input::Quit()

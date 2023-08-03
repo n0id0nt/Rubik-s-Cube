@@ -2,8 +2,7 @@
 #include <SDL.h>
 #include <glm\glm.hpp>
 #include <vector>
-
-
+#include <set>
 
 class Input
 {
@@ -27,16 +26,20 @@ public:
 	static glm::vec2* getMousePosition();
 
 	///Handling Keyboard Event
-	static void onKeyDown();
-	static void onKeyUp();
-	static bool isKeyDown(SDL_Scancode key);
+	static void onKeyDown(SDL_Event& event);
+	static void onKeyUp(SDL_Event& event);
+	static bool isKeyDown(SDL_Keycode key);
+	static bool isKeyJustPressed(SDL_Keycode key);
+	static bool isKeyJustReleased(SDL_Keycode key);
 	static bool Quit();
 
 private:
 
 	static std::vector<bool> m_mouseButtonStates;
 	static glm::vec2 m_mousePosition;
-	static Uint8* m_keystates;
+	static std::set<SDL_Keycode> m_keysDown;
+	static std::set<SDL_Keycode> m_keysPressed;
+	static std::set<SDL_Keycode> m_keysReleased;
 	static bool m_quit;
 };
 
