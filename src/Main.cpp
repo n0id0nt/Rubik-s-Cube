@@ -13,6 +13,10 @@
 #include "opengl\openglHelper.h"
 #include "Input.h"
 
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
+
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 const unsigned int FPS = 60;
@@ -59,27 +63,54 @@ int main(int argc, char* argv[])
 
 	bool running = true;
 
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	ImGui::StyleColorsDark();
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplSDL2_InitForOpenGL(window, context);
+	ImGui_ImplOpenGL3_Init();
+
     // game loop
 	while (running)
 	{
 		frameStart = SDL_GetTicks();
-
-		// Clear the colorbuffer
-		GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
-		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		// input
 		Input::Update();
 
 		// quit
 		if (Input::Quit())
+		{
 			running = false;
+			break;
+		}
+
+		// (After event loop)
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
+		ImGui::ShowDemoWindow();
 
 		// Update
 		scene->Update();
 
+		// Clear the colorbuffer
+		GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
 		// Render
 		scene->Render();
+
+		// Render ImGui
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		SDL_GL_SwapWindow(window);
 
@@ -91,7 +122,9 @@ int main(int argc, char* argv[])
 	}
 
 	// Exit
-    
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);

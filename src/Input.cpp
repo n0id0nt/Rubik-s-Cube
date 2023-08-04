@@ -1,4 +1,5 @@
 #include "Input.h"
+#include <imgui_impl_sdl2.h>
 
 std::vector<bool> Input::m_mouseButtonStates { false, false, false };
 glm::vec2 Input::m_mousePosition(0,0);
@@ -17,7 +18,11 @@ void Input::Update()
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        switch (event.type) {
+        // ImGui events
+        ImGui_ImplSDL2_ProcessEvent(&event); // Forward your event to backend
+
+        switch (event.type) 
+        {
         case SDL_QUIT:
             m_quit = true;
             break;
@@ -36,9 +41,6 @@ void Input::Update()
         case SDL_KEYUP:
             onKeyUp(event);
             break;
-        default:
-            break;
-
         }
     }
 }
