@@ -51,8 +51,8 @@ std::array<Side, CUBE_SIDES> RubiksCube::GetColors(Corner sides)
 		{
 			if (i == sides[j])
 			{
-				Side neighbour1 = j == 0 ? sides[1] : sides[0];
-				Side neighbour2 = j == 1 ? sides[2] : sides[1];
+				Side neighbour1 = sides[(j + 1) % sides.size()];
+				Side neighbour2 = sides[(j + 2) % sides.size()];
 				colorScheme[i] = m_faces[sides[j]].GetCornerSide(neighbour1, neighbour2);
 			}
 		}

@@ -33,7 +33,6 @@ void ComponentRubiksCubeAdaptor::Update()
 	GetEntity()->GetTransform()->SetRotation(glm::vec3(rotation.x + dir.y * rotationSpeed, rotation.y - dir.x * rotationSpeed, rotation.z));
 
 	// rotate cube sides
-	// up
 	if (Input::isKeyJustPressed(SDLK_u))
 	{
 		Move(Up, Clockwise);

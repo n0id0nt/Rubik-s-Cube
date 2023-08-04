@@ -6,15 +6,17 @@ Face::Face(Side side, std::array<Side, NUMBER_OF_NEIGHBOURS> neightbours)
 {
 	std::fill(m_corners.begin(), m_corners.end(), side);
 	std::fill(m_edges.begin(), m_edges.end(), side);
-	//m_corners[0] = Up;
-	//m_corners[1] = Down;
-	//m_corners[2] = Left;
-	//m_corners[3] = Right;
-	//
-	//m_edges[0] = Up;
-	//m_edges[1] = Down;
-	//m_edges[2] = Left;
-	//m_edges[3] = Right;
+	/*
+	m_corners[0] = Up;
+	m_corners[1] = Down;
+	m_corners[2] = Left;
+	m_corners[3] = Right;
+
+	m_edges[0] = Up;
+	m_edges[1] = Down;
+	m_edges[2] = Left;
+	m_edges[3] = Right;
+	//*/
 }
 
 Face::Face()
@@ -34,18 +36,20 @@ std::array<Side, NUMBER_OF_PIECES_PER_ROW> Face::GetRow(Side neighbour)
 {
 	std::array<Side, NUMBER_OF_PIECES_PER_ROW> row;
 	int index = GetIndexOfNeighbour(neighbour);
+	int index2 = (index + 1) % NUMBER_OF_NEIGHBOURS;
 	row[0] = m_corners[index];
 	row[1] = m_edges[index];
-	row[2] = m_corners[(index + 1) % NUMBER_OF_PIECES_PER_ROW];
+	row[2] = m_corners[index2];
 	return row;
 }
 
 void Face::SetRow(std::array<Side, NUMBER_OF_PIECES_PER_ROW> row, Side neighbour)
 {
 	int index = GetIndexOfNeighbour(neighbour);
+	int index2 = (index + 1) % NUMBER_OF_NEIGHBOURS;
 	m_corners[index] = row[0];
 	m_edges[index] = row[1];
-	m_corners[(index + 1) % NUMBER_OF_PIECES_PER_ROW] = row[2];
+	m_corners[index2] = row[2];
 }
 
 void Face::Rotate(MoveDir direction)
