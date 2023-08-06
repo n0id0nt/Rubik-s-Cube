@@ -1,7 +1,9 @@
 #pragma once
 
+class Panel;
+
 class IRenderer
 {
 public:
-	virtual void Render() = 0;
+	virtual void Render(Panel* panel) = 0;
 };

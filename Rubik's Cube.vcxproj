@@ -152,6 +152,9 @@
     <ClCompile Include="dependencies\imgui\imgui_impl_sdl2.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\opengl\FrameBuffer.cpp" />
+    <ClCompile Include="src\UI\ScenePanel.cpp" />
+    <ClCompile Include="src\UI\MovePanel.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Component\CubieComponent.cpp" />
     <ClCompile Include="src\Component\ComponentRubiksCubeAdaptor.cpp" />
@@ -187,6 +190,10 @@
     <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\opengl\FrameBuffer.h" />
+    <ClInclude Include="src\UI\ScenePanel.h" />
+    <ClInclude Include="src\UI\MovePanel.h" />
+    <ClInclude Include="src\UI\Panel.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Component\CubieComponent.h" />

@@ -16,7 +16,7 @@ RendererComponent::RendererComponent(Entity* entity, ColorScheme colorSceme)
     initOpenGL();
 }
 
-void RendererComponent::Render()
+void RendererComponent::Render(Panel* panel)
 {
     m_Shader->Bind();
 
@@ -24,17 +24,17 @@ void RendererComponent::Render()
     m_Texture->Bind();
     m_Shader->SetUniform1i("ourTexture1", 0);
 
-    GLCall(glBindVertexArray(m_VAO));
-
     Camera* camera= GetEntity()->GetScene()->GetCamera();
     glm::mat4 model = GetEntity()->GetTransform()->GetWorldMatrix();
     glm::mat4 view = camera->GetViewMatrix();
-    glm::mat4 projection = glm::perspective(camera->GetFov(), (GLfloat)GetEntity()->GetScene()->GetWindow()->Width / (GLfloat)GetEntity()->GetScene()->GetWindow()->Height, 0.1f, 1000.0f);
+    glm::mat4 projection = glm::perspective(camera->GetFov(), panel->GetSize().x / panel->GetSize().x, 0.1f, 1000.0f);
 
     // Set world matrices 
     m_Shader->SetUniformMat4f("model", model);
     m_Shader->SetUniformMat4f("view", view);
     m_Shader->SetUniformMat4f("projection", projection);
+
+    GLCall(glBindVertexArray(m_VAO));
 
     for (GLuint i = 0; i < 6; i++)
     {

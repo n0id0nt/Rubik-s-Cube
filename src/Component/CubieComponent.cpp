@@ -12,7 +12,7 @@ CubieComponent::CubieComponent(Entity* entity, ComponentRubiksCubeAdaptor* cubeC
 void CubieComponent::UpdateColors()
 {
 	auto sides =  m_RubiksCubeComponent->GetColors(m_sides);
-	RendererComponent::ColorScheme colorScheme;
+	RendererComponent::ColorScheme colorScheme {};
 	for (int i = 0; i < sides.size(); i++)
 	{
 		colorScheme[i] = ComponentRubiksCubeAdaptor::ConvertSideToColor(sides[i]);

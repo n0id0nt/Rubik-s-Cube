@@ -12,7 +12,7 @@ void Application::Loop()
 	{
 		m_frameStart = SDL_GetTicks();
 
-		m_window->Render();
+		m_window->Loop();
 
 		m_frameTime = SDL_GetTicks() - m_frameStart;
 		if (FRAME_DELAY > m_frameTime)

@@ -29,22 +29,23 @@ public:
 
 	void Input();
 
-	void Render();
+	void Loop();
 
 	void OnClose();
 	void OnResize(int w, int h);
 
-	bool IsRunning() { return m_running; }
+	bool IsRunning() const { return m_running; }
 
 	int Width, Height;
 
-private:
+	SDL_Window* GetSDLWindow() const { return m_window; }
+	SDL_GLContext* GetSDLContext() { return &m_context; }
 
+private:
 	SDL_Window* m_window;
 	SDL_GLContext m_context;
 
 	bool m_running;
 	std::unique_ptr<Scene> m_scene;
-	glm::vec4 m_clearColor;
 };
 

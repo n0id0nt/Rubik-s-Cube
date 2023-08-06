@@ -18,6 +18,8 @@ const glm::vec3 yellow = glm::vec3(0.85f, 0.85f, 0.08f);
 const glm::vec3 white = glm::vec3(1.0f, 1.0f, 1.0f);
 const glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
 
+class Panel;
+
 struct Vertex
 {
 	glm::vec3 pos;
@@ -34,7 +36,7 @@ public:
 
 	void Update() {}
 
-	void Render();
+	void Render(Panel* panel) override;
 
 	void SetColorSceme(ColorScheme colorScheme);
 
