@@ -27,7 +27,7 @@ void RendererComponent::Render(Panel* panel)
     Camera* camera= GetEntity()->GetScene()->GetCamera();
     glm::mat4 model = GetEntity()->GetTransform()->GetWorldMatrix();
     glm::mat4 view = camera->GetViewMatrix();
-    glm::mat4 projection = glm::perspective(camera->GetFov(), panel->GetSize().x / panel->GetSize().x, 0.1f, 1000.0f);
+    glm::mat4 projection = glm::perspective(camera->GetFov(), panel->GetSize().x / panel->GetSize().y, 0.1f, 1000.0f);
 
     // Set world matrices 
     m_Shader->SetUniformMat4f("model", model);

@@ -1,6 +1,7 @@
 #include "ScenePanel.h"
 #include "../Scene.h"
 #include "..\Component\RendererComponent.h"
+#include <iostream>
 
 
 void ScenePanel::Render()
@@ -29,4 +30,5 @@ void ScenePanel::Render()
 void ScenePanel::OnResize()
 {
 	m_frameBuffer->CreateBuffer(m_size.x, m_size.y);
+	//std::cout << "Resize " << m_size.x << ", " << m_size.y << std::endl;
 }
