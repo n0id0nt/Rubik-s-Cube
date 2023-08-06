@@ -2,6 +2,7 @@
 #include "../Entity/Entity.h"
 #include "../Camera.h"
 #include "../Scene.h"
+#include "../Window.h"
 
 RendererComponent::RendererComponent(Entity* entity) 
     : Component(entity), m_colorScheme{ black, black, black, black, black, black }//{ blue, green, orange, red, yellow, white }
@@ -28,7 +29,7 @@ void RendererComponent::Render()
     Camera* camera= GetEntity()->GetScene()->GetCamera();
     glm::mat4 model = GetEntity()->GetTransform()->GetWorldMatrix();
     glm::mat4 view = camera->GetViewMatrix();
-    glm::mat4 projection = glm::perspective(camera->GetFov(), (GLfloat)camera->GetWidth() / (GLfloat)camera->GetHeight(), 0.1f, 1000.0f);
+    glm::mat4 projection = glm::perspective(camera->GetFov(), (GLfloat)GetEntity()->GetScene()->GetWindow()->Width / (GLfloat)GetEntity()->GetScene()->GetWindow()->Height, 0.1f, 1000.0f);
 
     // Set world matrices 
     m_Shader->SetUniformMat4f("model", model);

@@ -1,9 +1,10 @@
 #include "Scene.h"
 #include "Component\RendererComponent.h"
 #include "Component/ComponentRubiksCubeAdaptor.h"
+#include "Window.h"
 
-Scene::Scene(unsigned int width, unsigned int height)
-	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 6.0f), width, height))
+Scene::Scene(Window* window)
+	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 6.0f))), m_window(window)
 {
 	// create the rubiks cube and respective components
 	Entity* rubiksCube = CreateEntity("Rubiks Cube");

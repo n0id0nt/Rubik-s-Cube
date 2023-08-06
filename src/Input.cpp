@@ -1,5 +1,6 @@
 #include "Input.h"
 #include <imgui_impl_sdl2.h>
+#include "Window.h"
 
 std::vector<bool> Input::m_mouseButtonStates { false, false, false };
 glm::vec2 Input::m_mousePosition(0,0);
@@ -7,6 +8,7 @@ bool Input::m_quit = false;
 std::set<SDL_Keycode> Input::m_keysDown {};
 std::set<SDL_Keycode> Input::m_keysPressed {};
 std::set<SDL_Keycode> Input::m_keysReleased {};
+Window* Input::window;
 
 void Input::Update()
 {
@@ -41,7 +43,11 @@ void Input::Update()
         case SDL_KEYUP:
             onKeyUp(event);
             break;
+        case SDL_WINDOWEVENT:
+            onWindowEvent(event);
+            break;
         }
+
     }
 }
 
@@ -89,6 +95,16 @@ void Input::onKeyUp(SDL_Event& event)
 bool Input::Quit()
 {
     return m_quit;
+}
+
+void Input::onWindowEvent(SDL_Event& event)
+{
+    switch (event.window.event)
+    {
+    case SDL_WINDOWEVENT_SIZE_CHANGED:
+        window->OnResize(event.window.data1, event.window.data2);
+        break;
+    }
 }
 
 void Input::onMouseButtonDown(SDL_Event& event)

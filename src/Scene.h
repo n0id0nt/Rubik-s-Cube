@@ -6,10 +6,12 @@
 #include "Camera.h"
 #include <string>
 
+class Window;
+
 class Scene
 {
 public :
-	Scene(unsigned int width = 0, unsigned int height = 0);
+	Scene(Window* window);
 	~Scene();
 
 	void Update();
@@ -19,9 +21,11 @@ public :
 	void RemoveEntity(Entity* entity);
 
 	Camera* GetCamera() const { return m_camera.get(); }
+	Window* GetWindow() const { return m_window; }
 
 private:
 	std::vector<std::unique_ptr<Entity>> m_entities;
 	std::unique_ptr<Camera> m_camera;
+	Window* m_window;
 };
 

@@ -3,6 +3,10 @@
 #include <glm\glm.hpp>
 #include <vector>
 #include <set>
+#include "Event.h"
+#include <tuple>
+
+class Window;
 
 class Input
 {
@@ -13,6 +17,8 @@ public:
 		Middle,
 		Right
 	};
+
+	static Window* window;
 
 	static void Update();
 
@@ -31,7 +37,10 @@ public:
 	static bool isKeyDown(SDL_Keycode key);
 	static bool isKeyJustPressed(SDL_Keycode key);
 	static bool isKeyJustReleased(SDL_Keycode key);
+
+	//Handling Window Event
 	static bool Quit();
+	static void onWindowEvent(SDL_Event& event);
 
 private:
 
